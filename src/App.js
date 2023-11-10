@@ -9,7 +9,7 @@ function App() {
   const purchaseData = useSelector(state => state.purchases)
   useEffect(() => {
     fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/basketProducts.json', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
