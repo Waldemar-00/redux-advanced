@@ -30,10 +30,10 @@ const purchasesSlice = createSlice({
         foundProduct.sum = foundProduct.sum - action.payload.price
       }
     },
-    updatePurchases(state, action) {
-      state.products = action.payload.products
-      state.allAmount = action.payload.allAmount
-    }
+    // updatePurchases(state, action) {
+      // state.products = action.payload.products
+      // state.allAmount = action.payload.allAmount
+    // }
   }
 })
 export const purchasesActions = purchasesSlice.actions
