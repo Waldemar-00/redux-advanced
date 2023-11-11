@@ -33,9 +33,15 @@ const purchasesSlice = createSlice({
       }
     },
     updateBasket(state, action) {
-      state.products = action.payload.products
-      state.allAmount = action.payload.allAmount
-      state.isDataChanged = false
+      if (action.payload === null) {
+        state.products = []
+        state.allAmount = 0
+        state.isDataChanged = false
+      } else {
+        state.products = action.payload.products
+        state.allAmount = action.payload.allAmount
+        state.isDataChanged = false
+      }
     }
   }
 })
@@ -76,7 +82,16 @@ export function getData() {
   return (dispatch) => {
     fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/products.json')
       .then(response => response.json())
-      .then(response => dispatch(purchasesSlice.actions.updateBasket(response)))
+      .then(response => {
+        if (response === null) {
+          dispatch(basketActions.showStatusMessage({
+            status: 'success',
+            title: 'Данных нет',
+            message: 'Ваших данных на сервере нет!'
+          }))
+        }
+        dispatch(purchasesSlice.actions.updateBasket(response))
+      })
       .catch(error => {
         dispatch(basketActions.showStatusMessage({
           status: 'error',
