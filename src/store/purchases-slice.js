@@ -86,7 +86,7 @@ export function getData() {
         if (response === null) {
           dispatch(basketActions.showStatusMessage({
             status: 'success',
-            title: 'Данных нет',
+            title: 'Ваших данных на сервере нет!',
             message: 'Ваших данных на сервере нет!'
           }))
         }
@@ -95,7 +95,7 @@ export function getData() {
       .catch(error => {
         dispatch(basketActions.showStatusMessage({
           status: 'error',
-          title: 'Ошибка запроса на сервер((',
+          title: 'Ошибка запроса на сервер (',
           message: 'Ошибка получения данных корзины!'
         }))
         console.log(error)

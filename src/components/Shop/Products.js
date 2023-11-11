@@ -1,20 +1,19 @@
 import ProductItem from "./ProductItem" 
 import styles from "./Products.module.css" 
-import { v4 } from 'uuid'
 const PRODUCTS = [
   {
-    key: v4(),
+    key: '1',
     title: "Супер-Товар 1",
     price: 7, 
     description: "Tовар номер 1 прослужит вам очень долго."
   },
   {
-    key: v4(),
+    key: '2',
     title: "Супер-Товар 2",
     price: 9,
     description: "Tовар номер 2 прослужит вам очень долго." },
   {
-    key: v4(),
+    key: '3',
     title: "Супер-Товар 3",
     price: 11,
     description: "Tовар номер 3 прослужит вам очень долго."
