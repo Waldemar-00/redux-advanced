@@ -2,11 +2,12 @@ import { createSlice } from '@reduxjs/toolkit'
 import { basketActions } from './basket-slice'
 const purchasesSlice = createSlice({
   name: 'purchases',
-  initialState: { products: [], allAmount: 0 },
+  initialState: { products: [], allAmount: 0, isDataChanged: false },
   reducers: {
     addProduct(state, action) {
       const foundProduct = state.products.find(prod => prod.id === action.payload.id)
       state.allAmount++
+      state.isDataChanged = true
       if (foundProduct) {
         foundProduct.amount++
         foundProduct.sum = foundProduct.sum + action.payload.price
@@ -23,6 +24,7 @@ const purchasesSlice = createSlice({
     removeProduct(state,action) {
       const foundProduct = state.products.find(prod => prod.id === action.payload.id)
       state.allAmount--
+      state.isDataChanged = true
       if (foundProduct.amount === 1) {
         state.products = state.products.filter(prod => prod.id !== action.payload.id)
       } else {
@@ -33,6 +35,7 @@ const purchasesSlice = createSlice({
     updateBasket(state, action) {
       state.products = action.payload.products
       state.allAmount = action.payload.allAmount
+      state.isDataChanged = false
     }
   }
 })

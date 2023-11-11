@@ -14,7 +14,7 @@ const ProductItem = ({ id, title, price, description }) => {
     dispatchPurchase(purchasesActions.addProduct({ id, title, price }))
   }
   useEffect(() => {
-    if (purchaseData.products.length > 0) {
+    if (purchaseData.isDataChanged) {
       dispatchThunk(sendData(purchaseData))
       // dispatchBasket(basketActions.showStatusMessage({
         // status: 'pending',
