@@ -2,13 +2,18 @@ import Cart from './components/Cart/Cart'
 import Layout from './components/Layout/Layout' 
 import Products from './components/Shop/Products' 
 import { useSelector } from 'react-redux'
-// import { useDispatch } from 'react-redux'
-// import { basketActions } from './store/basket-slice'
-// import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+// import { purchasesActions } from './store/purchases-slice'
+import { useEffect } from 'react'
+import { getData } from './store/purchases-slice'
 import StatusBarMessage from './components/UI/StatusBarMessage'
 
 function App() {
   const { isVisibleBasket, statusMessage } = useSelector(state => state.basket)
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(getData())
+  }, [dispatch])
   // const dispatch = useDispatch()
   // const purchaseData = useSelector(state => state.purchases)
   // useEffect(() => {

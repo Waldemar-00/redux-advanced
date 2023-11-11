@@ -21,7 +21,7 @@ const ProductItem = ({ id, title, price, description }) => {
         // title: 'Отправка данных',
         // message: 'Данные корзины отправляются на сервер...'
       // }))
-      // fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/basketProducts.json', {
+      // fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/products.json', {
         // method: 'PUT',
         // headers: {
           // 'Content-Type': 'application/json'

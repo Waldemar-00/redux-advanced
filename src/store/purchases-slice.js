@@ -30,6 +30,10 @@ const purchasesSlice = createSlice({
         foundProduct.sum = foundProduct.sum - action.payload.price
       }
     },
+    updateBasket(state, action) {
+      state.products = action.payload.products
+      state.allAmount = action.payload.allAmount
+    }
   }
 })
 export function sendData(purchaseData) {
@@ -39,7 +43,7 @@ export function sendData(purchaseData) {
       title: 'Отправка данных',
       message: 'Данные корзины отправляются на сервер...'
     }))
-    fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/basketProducts.json', {
+    fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/products.json', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -60,6 +64,21 @@ export function sendData(purchaseData) {
           status: 'error',
           title: 'Ошибка запроса((',
           message: 'Ошибка при отправке данных!'
+        }))
+        console.log(error)
+      })
+  }
+}
+export function getData() {
+  return (dispatch) => {
+    fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/products.json')
+      .then(response => response.json())
+      .then(response => dispatch(purchasesSlice.actions.updateBasket(response)))
+      .catch(error => {
+        dispatch(basketActions.showStatusMessage({
+          status: 'error',
+          title: 'Ошибка запроса на сервер((',
+          message: 'Ошибка получения данных корзины!'
         }))
         console.log(error)
       })
