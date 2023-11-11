@@ -2,48 +2,51 @@ import Card from "../UI/Card"
 import styles from "./ProductItem.module.css" 
 import { useDispatch, useSelector } from 'react-redux'
 import { purchasesActions } from "../../store/purchases-slice"
-import { basketActions } from '../../store/basket-slice'
+// import { basketActions } from '../../store/basket-slice'
+import { sendData } from "../../store/purchases-slice"
 import { useEffect } from 'react'
 const ProductItem = ({ id, title, price, description }) => {
   const dispatchPurchase = useDispatch()
-  const dispatchBasket = useDispatch()
+  // const dispatchBasket = useDispatch()
+  const dispatchThunk = useDispatch()
   const purchaseData = useSelector(state => state.purchases)
   function addProduct() {
     dispatchPurchase(purchasesActions.addProduct({ id, title, price }))
   }
   useEffect(() => {
     if (purchaseData.products.length > 0) {
-      dispatchBasket(basketActions.showStatusMessage({
-        status: 'pending',
-        title: 'Отправка данных',
-        message: 'Данные корзины отправляются на сервер...'
-      }))
-      fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/basketProducts.json', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(purchaseData)
-      })
-        .then(response => response.json())
-        .then(response => {
-          dispatchBasket(basketActions.showStatusMessage({
-            status: 'success',
-            title: 'Данные отправлены',
-            message: 'Данные отправлены на сервер!'
-          }))
-          console.log(response) // we can show that in the popup
-        })
-        .catch(error => {
-          dispatchBasket(basketActions.showStatusMessage({
-            status: 'error',
-            title: 'Ошибка запроса((',
-            message: 'Ошибка при отправке данных!'
-          }))
-          console.log(error)
-        })
+      dispatchThunk(sendData(purchaseData))
+      // dispatchBasket(basketActions.showStatusMessage({
+        // status: 'pending',
+        // title: 'Отправка данных',
+        // message: 'Данные корзины отправляются на сервер...'
+      // }))
+      // fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/basketProducts.json', {
+        // method: 'PUT',
+        // headers: {
+          // 'Content-Type': 'application/json'
+        // },
+        // body: JSON.stringify(purchaseData)
+      // })
+        // .then(response => response.json())
+        // .then(response => {
+          // dispatchBasket(basketActions.showStatusMessage({
+            // status: 'success',
+            // title: 'Данные отправлены',
+            // message: 'Данные отправлены на сервер!'
+          // }))
+          // console.log(response) // we can show that in the popup
+        // })
+        // .catch(error => {
+          // dispatchBasket(basketActions.showStatusMessage({
+            // status: 'error',
+            // title: 'Ошибка запроса((',
+            // message: 'Ошибка при отправке данных!'
+          // }))
+          // console.log(error)
+        // })
       }
-  }, [dispatchBasket, purchaseData])
+  }, [purchaseData, dispatchThunk])
   return (
     <li className={styles.item}>
       <Card>

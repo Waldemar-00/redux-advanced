@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-
+import { basketActions } from './basket-slice'
 const purchasesSlice = createSlice({
   name: 'purchases',
   initialState: { products: [], allAmount: 0 },
@@ -30,11 +30,40 @@ const purchasesSlice = createSlice({
         foundProduct.sum = foundProduct.sum - action.payload.price
       }
     },
-    // updatePurchases(state, action) {
-      // state.products = action.payload.products
-      // state.allAmount = action.payload.allAmount
-    // }
   }
 })
+export function sendData(purchaseData) {
+  return (dispatch) => {
+    dispatch(basketActions.showStatusMessage({
+      status: 'pending',
+      title: 'Отправка данных',
+      message: 'Данные корзины отправляются на сервер...'
+    }))
+    fetch('https://custom-hooks-firebase-default-rtdb.firebaseio.com/basketProducts.json', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(purchaseData)
+    })
+      .then(response => response.json())
+      .then(response => {
+        dispatch(basketActions.showStatusMessage({
+          status: 'success',
+          title: 'Данные отправлены',
+          message: 'Данные отправлены на сервер!'
+        }))
+        console.log(response) // we can show that in the popup
+      })
+      .catch(error => {
+        dispatch(basketActions.showStatusMessage({
+          status: 'error',
+          title: 'Ошибка запроса((',
+          message: 'Ошибка при отправке данных!'
+        }))
+        console.log(error)
+      })
+  }
+}
 export const purchasesActions = purchasesSlice.actions
 export default purchasesSlice.reducer //state
