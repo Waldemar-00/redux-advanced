@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { basketActions } from './store/basket-slice'
 import { useEffect } from 'react'
 import StatusBarMessage from './components/UI/StatusBarMessage'
+
 function App() {
   const { isVisibleBasket, statusMessage } = useSelector(state => state.basket)
   const dispatch = useDispatch()
@@ -22,24 +23,22 @@ function App() {
       },
       body: JSON.stringify(purchaseData)
     })
-      .then(response => {
-        if (!response.ok) {
-          console.log(response.ok)
-          dispatch(basketActions.showStatusMessage({
-            status: 'error',
-            title: 'Ошибка запроса((',
-            message: 'Ошибка при отправке данных!'
-          }))
-        }
-        return response.json()
-      })
+      .then(response => response.json())
       .then(response => {
         dispatch(basketActions.showStatusMessage({
           status: 'success',
           title: 'Данные отправлены',
           message: 'Данные отправлены на сервер!'
         }))
-        console.log(response)
+        console.log(response) // we can show that in the popup
+      })
+      .catch(error => {
+        dispatch(basketActions.showStatusMessage({
+          status: 'error',
+          title: 'Ошибка запроса((',
+          message: 'Ошибка при отправке данных!'
+        }))
+        console.log(error)
       })
   }, [purchaseData, dispatch])
   return (
