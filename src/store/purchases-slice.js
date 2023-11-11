@@ -57,7 +57,7 @@ export function sendData(purchaseData) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(purchaseData)
+      body: JSON.stringify({ products: purchaseData.products, allAmount: purchaseData.allAmount })
     })
       .then(response => response.json())
       .then(response => {
